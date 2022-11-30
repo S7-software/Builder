@@ -18,21 +18,31 @@ public class GameManager : MonoBehaviour
     bool _showAnimOfCube = false;
     Rigidbody _rigiStructure;
     float _counterAnimChange = 0;
+
+
     private void Awake()
     {
         instantiate = this;
         _cubeLast = FindObjectOfType<Cube>();
-       // _cubeLast.DetectedFace(FaceOfCube.Bottom);
         _allCubesInScene.Add(_cubeLast);
         _rigiStructure = _structure.GetComponent<Rigidbody>();
 
     }
+
     private void Start()
+    {
+        StartCoroutine(StartCor());
+    }
+
+    IEnumerator StartCor()
     {
         _rigiStructure.useGravity = true;
         _rigiStructure.isKinematic = false;
         _showAnimOfCube = true;
         _cubeLast.RandomShowFace();
+        FindObjectOfType<CameraLooks>().StartRotate();
+        yield return new WaitForSeconds(0);
+
     }
 
     private void Update()
@@ -41,6 +51,51 @@ public class GameManager : MonoBehaviour
     }
 
 
+
+
+    //CUBE
+    public void ChangeActiveCube(Cube cube)
+    {
+        _showAnimOfCube = false;
+        _cubeLast.HideAllFaceObj();
+        _cubeLast = cube;
+        _showAnimOfCube = true;
+    }
+    void AnimOfCubesFace()
+    {
+        if (!_showAnimOfCube) return;
+        _counterAnimChange += Time.deltaTime;
+        if (_counterAnimChange < _speedAnimChange) return;
+        _showAnimOfCube = false;
+        _counterAnimChange = 0;
+        _cubeLast.RandomShowFace();
+        _showAnimOfCube = true;
+
+
+
+
+    }
+
+
+    //BUTTON HANDLES
+    public void ButtonTap()
+    {
+        if (!_showAnimOfCube) return;
+        _rigiStructure.useGravity = false;
+        _showAnimOfCube = false;
+        _cubeLast.HideAllFaceObj();
+
+        Vector3 locPos = _cubeLast.GetSpawnFromSelectedFace();
+        GameObject go = Instantiate(_cloneCube, _cubeLast.transform);
+        go.transform.localPosition = locPos;
+        go.transform.localRotation = Quaternion.Euler(0, 0, 0);
+        _cubeLast = go.GetComponent<Cube>();
+        if (_cloneCube.gameObject.transform.position.y <= 0) _cubeLast.DetectedFace(FaceOfCube.Bottom);
+        _allCubesInScene.Add(_cubeLast);
+        _rigiStructure.useGravity = true;
+        _counterAnimChange = _speedAnimChange - 0.4f;
+        _showAnimOfCube = true;
+    }
 
     public void ButtonBomb()
     {
@@ -59,47 +114,23 @@ public class GameManager : MonoBehaviour
 
     }
 
-    public void ChangeActiveCube(Cube cube)
+    public void ButtonPause()
+    {
+        CameraLooks temp = FindObjectOfType<CameraLooks>();
+        if (temp.IsTurning())
+            temp.StopRotate();
+        else
+            temp.StartRotate();
+    }
+
+    // STATES OF GAME
+
+    public void Finish()
     {
         _showAnimOfCube = false;
         _cubeLast.HideAllFaceObj();
-        _cubeLast = cube;
-        _showAnimOfCube = true;
+        Debug.Log("FINISH");
     }
 
-
-
-
-    public void ButtonTap()
-    {
-        _rigiStructure.useGravity = false;
-        _showAnimOfCube = false;
-        _cubeLast.HideAllFaceObj();
-
-        Vector3 locPos = _cubeLast.GetSpawnFromSelectedFace();
-        GameObject go = Instantiate(_cloneCube,  _cubeLast.transform);
-        go.transform.localPosition = locPos;
-        go.transform.localRotation = Quaternion.Euler(0, 0, 0);
-      
-        _cubeLast = go.GetComponent<Cube>();
-        _allCubesInScene.Add(_cubeLast);
-        _rigiStructure.useGravity = true;
-        _counterAnimChange = 0;
-        _showAnimOfCube = true;
-    }
-    void AnimOfCubesFace()
-    {
-        if (!_showAnimOfCube) return;
-        _counterAnimChange += Time.deltaTime;
-        if (_counterAnimChange < _speedAnimChange) return;
-        _showAnimOfCube = false;
-        _counterAnimChange = 0;
-        _cubeLast.RandomShowFace();
-        _showAnimOfCube = true;
-
-
-
-
-    }
 
 }
