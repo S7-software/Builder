@@ -11,11 +11,11 @@ public class Cube : MonoBehaviour
    public List<FaceOfCube> _nullFaces = new List<FaceOfCube> {
         FaceOfCube.Top, FaceOfCube.Bottom, FaceOfCube.Left, FaceOfCube.Right, FaceOfCube.Front, FaceOfCube.Back };
     FaceOfCube _selectedFace;
+    bool _faceWorked = false;
     private void Awake()
     {
         _ownLoc = transform.position;
         HideAllFaceObj();
-        if (transform.position.y <= 0.1) DetectedFace(FaceOfCube.Bottom);
       
 
 
@@ -58,6 +58,7 @@ public class Cube : MonoBehaviour
         HideAllFaceObj();
         FaceOfCube face = GetRandomNullFaceWithoutThisFace(_selectedFace);
         _selectedFace = face;
+        _faceWorked = true;
         switch (face)
         {
             case FaceOfCube.Top:
@@ -85,37 +86,11 @@ public class Cube : MonoBehaviour
 
     public Vector3 GetSpawnFromSelectedFace()
     {
-        //Vector3 temp;
-        //_ownLoc = transform.position;
-        //temp = GetSpawnFromFace(_selectedFace);
-        //return  temp;
+       
         return STCube.GetSpawnLocalPosFromFace(_selectedFace);
     }
 
-  
 
-    Vector3 GetSpawnFromFace(FaceOfCube face)
-    {
-        
-        switch (face)
-        {
-            case FaceOfCube.Top:
-                return _objTop.transform.position;
-            case FaceOfCube.Bottom:
-                return _objBottom.transform.position;
-            case FaceOfCube.Left:
-                return _objLeft.transform.position;
-            case FaceOfCube.Right:
-                return _objRight.transform.position;
-            case FaceOfCube.Front:
-                return _objFront.transform.position;
-
-            case FaceOfCube.Back:
-                return _objBack.transform.position;
-            default:
-                return new Vector3(0, 0, 0);
-        }
-    }
 
    void ActiveSensors()
     {
@@ -130,31 +105,7 @@ public class Cube : MonoBehaviour
         Destroy(gameObject, countDown);
     }
 
-    //void DetectedFace()
-    //{
-    //    int run1 = 0, run2 = 0;
-    //    List<FaceOfCube> temp = new List<FaceOfCube>(_nullFaces);
-    //    foreach (var item in temp)
-    //    {
-    //        Debug.Log("Foreach1: " + run1);
-    //        Vector3 temp2 = _ownLoc + GetSpawnFromFace(item);
-    //        Collider[] touchs = Physics.OverlapBox(temp, Vector3.one / 8f);
-    //        foreach (var item2 in touchs)
-    //        {
-    //            Debug.Log("Foreach2: " + run2);
-
-    //            if (item2.gameObject.tag == "PlayerCube")
-    //            {
-    //                Debug.Log("bulundu: " + item.ToString());
-    //            DetectedFace(item);
-    //            }
-                
-    //        }
-    //    }
-
-        
-        
-    //}
+    public bool IsFaceWorked() => _faceWorked;
 
 
 

@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager instantiate;
-    [SerializeField] GameObject _cloneCube, _structure;
+    [SerializeField] GameObject _cloneCube, _structure,_canvasPause,_canvasGameOverFree;
     [SerializeField] [Range(0.1f, 3f)] float _speedAnimChange = 0.5f;
     [SerializeField] [Range(3, 10)] int _countBombDestroy = 8;
     [SerializeField] [Range(1f, 10f)] float _timeBombEfect = 3f;
@@ -16,18 +17,25 @@ public class GameManager : MonoBehaviour
     Cube _cubeLast;
     List<Cube> _allCubesInScene = new List<Cube>();
     bool _showAnimOfCube = false;
+
+    
+
     Rigidbody _rigiStructure;
     float _counterAnimChange = 0;
 
+    CANVAS_UI _canvasUI;
 
     private void Awake()
     {
         instantiate = this;
         _cubeLast = FindObjectOfType<Cube>();
+        _canvasUI = FindObjectOfType<CANVAS_UI>();
         _allCubesInScene.Add(_cubeLast);
         _rigiStructure = _structure.GetComponent<Rigidbody>();
 
     }
+
+   
 
     private void Start()
     {
@@ -80,7 +88,7 @@ public class GameManager : MonoBehaviour
     //BUTTON HANDLES
     public void ButtonTap()
     {
-        if (!_showAnimOfCube) return;
+        if (!_cubeLast.IsFaceWorked()) return;
         _rigiStructure.useGravity = false;
         _showAnimOfCube = false;
         _cubeLast.HideAllFaceObj();
@@ -90,7 +98,8 @@ public class GameManager : MonoBehaviour
         go.transform.localPosition = locPos;
         go.transform.localRotation = Quaternion.Euler(0, 0, 0);
         _cubeLast = go.GetComponent<Cube>();
-        if (_cloneCube.gameObject.transform.position.y <= 0) _cubeLast.DetectedFace(FaceOfCube.Bottom);
+       
+
         _allCubesInScene.Add(_cubeLast);
         _rigiStructure.useGravity = true;
         _counterAnimChange = _speedAnimChange - 0.4f;
@@ -116,20 +125,30 @@ public class GameManager : MonoBehaviour
 
     public void ButtonPause()
     {
-        CameraLooks temp = FindObjectOfType<CameraLooks>();
-        if (temp.IsTurning())
-            temp.StopRotate();
-        else
-            temp.StartRotate();
+        Instantiate(_canvasPause);
+    }
+
+    public void ButtonContiune()
+    {
+
+        SetActiveBtnPause(true);
+       ///// yapılacaklar
+    }
+
+    // PARAMETERS
+    public void SetActiveBtnPause(bool v)
+    {
+        _canvasUI.SetActivePauseButton(v);
     }
 
     // STATES OF GAME
 
     public void Finish()
     {
+        SetActiveBtnPause(false);
         _showAnimOfCube = false;
         _cubeLast.HideAllFaceObj();
-        Debug.Log("FINISH");
+        Instantiate(_canvasGameOverFree);
     }
 
 

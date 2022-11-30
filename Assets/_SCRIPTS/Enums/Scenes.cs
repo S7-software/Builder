@@ -1,1 +1,4 @@
-﻿public enum Scenes { Main,Restart,Quit}
+﻿public enum Scenes {
+    MainMenu, Restart,Quit,
+    GameFree
+}

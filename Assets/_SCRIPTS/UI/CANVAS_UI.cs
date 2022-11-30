@@ -4,19 +4,25 @@ using UnityEngine.UI;
 
 public class CANVAS_UI :MonoBehaviour
 {
-    [SerializeField] Button _btnRestart,_btnExit;
+    [SerializeField] Button _btnPause,_btnTap;
 
     private void Awake()
     {
-        _btnRestart.onClick.AddListener(() =>
+        _btnPause.onClick.AddListener(() =>
         {
-            STSceneManager.GoTo(Scenes.Restart);
+            SetActivePauseButton(false);
+            GameManager.instantiate.ButtonPause();
         });
 
-_btnExit.onClick.AddListener(() =>
+        _btnTap.onClick.AddListener(() =>
         {
-            STSceneManager.GoTo(Scenes.Quit);
+            GameManager.instantiate.ButtonTap();
         });
 
+    }
+
+    public void SetActivePauseButton(bool deger)
+    {
+        _btnPause.gameObject.SetActive(deger);
     }
 }
