@@ -1,0 +1,1 @@
+﻿public enum Scenes { Main,Restart,Quit}
