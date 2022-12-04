@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour
 
     Rigidbody _rigiStructure;
     float _counterAnimChange = 0;
-
+    int _heightMax = 0, _counterCamera = 11;
     CANVAS_UI _canvasUI;
 
     private void Awake()
@@ -39,7 +39,9 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+       
         StartCoroutine(StartCor());
+        UpdateScore();
     }
 
     IEnumerator StartCor()
@@ -73,7 +75,7 @@ public class GameManager : MonoBehaviour
     {
         if (!_showAnimOfCube) return;
         _counterAnimChange += Time.deltaTime;
-        if (_counterAnimChange < _speedAnimChange) return;
+        if (_counterAnimChange < GetSpeedAnimChange()) return;
         _showAnimOfCube = false;
         _counterAnimChange = 0;
         _cubeLast.RandomShowFace();
@@ -102,9 +104,14 @@ public class GameManager : MonoBehaviour
 
         _allCubesInScene.Add(_cubeLast);
         _rigiStructure.useGravity = true;
-        _counterAnimChange = _speedAnimChange - 0.4f;
+        _counterAnimChange = GetSpeedAnimChange() - 0.4f;
         _showAnimOfCube = true;
+
+        UpdateScore();
+
     }
+
+    
 
     public void ButtonBomb()
     {
@@ -139,6 +146,27 @@ public class GameManager : MonoBehaviour
     public void SetActiveBtnPause(bool v)
     {
         _canvasUI.SetActivePauseButton(v);
+    }
+
+    private void UpdateScore()
+    {
+        int height = Convert.ToInt32(Math.Round(_cubeLast.gameObject.transform.position.y));
+        _heightMax = height > _heightMax ? height : _heightMax;
+        _canvasUI.SetScore(_allCubesInScene.Count, _heightMax);
+        UpdateCameraDistance(_heightMax);
+    }
+
+    private void UpdateCameraDistance(int v)
+    {
+        if (v == _counterCamera)
+        {
+            _counterCamera += 8;
+            FindObjectOfType<CameraLooks>().SetLookRange(8);
+        }
+    }
+    float GetSpeedAnimChange() {
+        float temp= _speedAnimChange * ((50 - ((_heightMax > 0) ? (float)_heightMax : 1)) / 50);
+        return temp < 0.4f ? 0.4f : temp;
     }
 
     // STATES OF GAME

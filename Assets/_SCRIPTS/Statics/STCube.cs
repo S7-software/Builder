@@ -9,7 +9,7 @@ public class STCube : MonoBehaviour
         switch (face)
         {
             case FaceOfCube.Top:
-                return new Vector3(0, 1, 0);
+                return new Vector3(0, 1, 0); 
             case FaceOfCube.Bottom:
                 return new Vector3(0, -1, 0);
             case FaceOfCube.Left:

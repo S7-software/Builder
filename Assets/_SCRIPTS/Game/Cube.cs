@@ -42,7 +42,11 @@ public class Cube : MonoBehaviour
         _objBack.SetActive(false);
     }
      FaceOfCube GetRandomNullFace() {
-        //0 alan kaldığında
+        if (_nullFaces.Count == 0)
+        {
+            GameManager.instantiate.Finish();
+            return FaceOfCube.Bottom;
+        }
         return _nullFaces[Random.Range(0, _nullFaces.Count)];
     }
     FaceOfCube GetRandomNullFaceWithoutThisFace(FaceOfCube faceOfCube)
