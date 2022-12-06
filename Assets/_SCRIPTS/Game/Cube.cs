@@ -8,15 +8,17 @@ public class Cube : MonoBehaviour
     [SerializeField] GameObject[] _sensors;
 
     Vector3 _ownLoc;
-   public List<FaceOfCube> _nullFaces = new List<FaceOfCube> {
+    List<FaceOfCube> _nullFaces = new List<FaceOfCube> {
         FaceOfCube.Top, FaceOfCube.Bottom, FaceOfCube.Left, FaceOfCube.Right, FaceOfCube.Front, FaceOfCube.Back };
     FaceOfCube _selectedFace;
     bool _faceWorked = false;
+    MeshRenderer _meshRenderer;
     private void Awake()
     {
         _ownLoc = transform.position;
+        _meshRenderer = GetComponent<MeshRenderer>();
         HideAllFaceObj();
-      
+            
 
 
     }
@@ -86,6 +88,14 @@ public class Cube : MonoBehaviour
             default:
                 break;
         }
+    }
+
+    public void SetParameters(Vector3 localPos,Material material)
+    {
+        if(material)
+        _meshRenderer.material = material;
+        transform.localPosition = localPos;
+        transform.localRotation = Quaternion.Euler(0, 0, 0);
     }
 
     public Vector3 GetSpawnFromSelectedFace()

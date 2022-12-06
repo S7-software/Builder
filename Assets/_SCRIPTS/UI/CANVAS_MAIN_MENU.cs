@@ -25,6 +25,7 @@ public class CANVAS_MAIN_MENU : MonoBehaviour
 
     IEnumerator GoToScene(Scenes scene)
     {
+        SoundBox.instance.PlayOneShot(NamesOfSound.clickUI);
         yield return new WaitForSeconds(_delay);
         STSceneManager.GoTo(scene);
     }

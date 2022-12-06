@@ -34,6 +34,7 @@ public class CANVAS_UI :MonoBehaviour
     {
         _btnPause.onClick.AddListener(() =>
         {
+            SoundBox.instance.PlayOneShot(NamesOfSound.clickUI);
             SetActivePauseButton(false);
             GameManager.instantiate.ButtonPause();
         });

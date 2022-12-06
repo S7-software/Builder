@@ -11,8 +11,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] [Range(3, 10)] int _countBombDestroy = 8;
     [SerializeField] [Range(1f, 10f)] float _timeBombEfect = 3f;
 
-
-
+    [Header("-------------")]
+    [SerializeField] NameOfCubeMaterial[] _namesOfCubeMat;
 
     Cube _cubeLast;
     List<Cube> _allCubesInScene = new List<Cube>();
@@ -24,7 +24,7 @@ public class GameManager : MonoBehaviour
     float _counterAnimChange = 0;
     int _heightMax = 0, _counterCamera = 11;
     CANVAS_UI _canvasUI;
-
+    Material _chosenMat;
     private void Awake()
     {
         instantiate = this;
@@ -91,16 +91,17 @@ public class GameManager : MonoBehaviour
     public void ButtonTap()
     {
         if (!_cubeLast.IsFaceWorked()) return;
+        SoundBox.instance.PlayOneShot(NamesOfSound.craft);
         _rigiStructure.useGravity = false;
         _showAnimOfCube = false;
         _cubeLast.HideAllFaceObj();
 
-        Vector3 locPos = _cubeLast.GetSpawnFromSelectedFace();
+        Vector3 locPos =  _cubeLast.GetSpawnFromSelectedFace();
         GameObject go = Instantiate(_cloneCube, _cubeLast.transform);
-        go.transform.localPosition = locPos;
-        go.transform.localRotation = Quaternion.Euler(0, 0, 0);
         _cubeLast = go.GetComponent<Cube>();
-       
+
+        _chosenMat = STResources.GetPlayerMaterial(_namesOfCubeMat[UnityEngine.Random.Range(0, _namesOfCubeMat.Length)]);
+        _cubeLast.SetParameters(locPos,_chosenMat);
 
         _allCubesInScene.Add(_cubeLast);
         _rigiStructure.useGravity = true;
@@ -160,6 +161,7 @@ public class GameManager : MonoBehaviour
     {
         if (v == _counterCamera)
         {
+            SoundBox.instance.PlayOneShot(NamesOfSound.cameradistance);
             _counterCamera += 8;
             FindObjectOfType<CameraLooks>().SetLookRange(8);
         }
@@ -173,6 +175,7 @@ public class GameManager : MonoBehaviour
 
     public void Finish()
     {
+        SoundBox.instance.PlayOneShot(NamesOfSound.fail3);
         SetActiveBtnPause(false);
         _showAnimOfCube = false;
         _cubeLast.HideAllFaceObj();

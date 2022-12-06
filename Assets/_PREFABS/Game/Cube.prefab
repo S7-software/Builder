@@ -228,7 +228,6 @@ MonoBehaviour:
   - {fileID: 8190269099331758756}
   - {fileID: 8190269099657307008}
   - {fileID: 8190269100736309521}
-  _nullFaces: 000000000100000002000000030000000400000005000000
 --- !u!33 &8190269099326681569
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -256,7 +255,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e00388a2c6f2643c98921079156b5e30, type: 2}
+  - {fileID: 2100000, guid: b37f7d6bb013643b4af1a3dc1074e84c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

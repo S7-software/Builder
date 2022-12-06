@@ -28,6 +28,7 @@ public class CANVAS_GAME_OVER_FREE : MonoBehaviour
     }
     IEnumerator GoToScene(Scenes scene)
     {
+        SoundBox.instance.PlayOneShot(NamesOfSound.clickUI);
         DOTween.KillAll();
         yield return new WaitForSeconds(_delay);
         STSceneManager.GoTo(scene);
@@ -35,6 +36,7 @@ public class CANVAS_GAME_OVER_FREE : MonoBehaviour
 
     IEnumerator CorContiuine ()
     {
+        SoundBox.instance.PlayOneShot(NamesOfSound.clickUI);
         GameManager.instantiate.ButtonContiune();
         yield return new WaitForSeconds(0.1f);
         Destroy(gameObject);
