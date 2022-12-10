@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
 
     [Header("-------------")]
     [SerializeField] NameOfCubeMaterial[] _namesOfCubeMat;
-
+    NameOfCubeMaterial _chosenNameOfCubeMat;
     Cube _cubeLast;
     List<Cube> _allCubesInScene = new List<Cube>();
     bool _showAnimOfCube = false;
@@ -32,6 +32,8 @@ public class GameManager : MonoBehaviour
         _canvasUI = FindObjectOfType<CANVAS_UI>();
         _allCubesInScene.Add(_cubeLast);
         _rigiStructure = _structure.GetComponent<Rigidbody>();
+        _chosenNameOfCubeMat = _namesOfCubeMat[0];
+        _chosenMat = STResources.GetPlayerMaterial(_chosenNameOfCubeMat);
 
     }
 
@@ -100,7 +102,7 @@ public class GameManager : MonoBehaviour
         GameObject go = Instantiate(_cloneCube, _cubeLast.transform);
         _cubeLast = go.GetComponent<Cube>();
 
-        _chosenMat = STResources.GetPlayerMaterial(_namesOfCubeMat[UnityEngine.Random.Range(0, _namesOfCubeMat.Length)]);
+       // _chosenMat = STResources.GetPlayerMaterial(_chosenNameOfCubeMat);
         _cubeLast.SetParameters(locPos,_chosenMat);
 
         _allCubesInScene.Add(_cubeLast);
@@ -170,6 +172,8 @@ public class GameManager : MonoBehaviour
         float temp= _speedAnimChange * ((50 - ((_heightMax > 0) ? (float)_heightMax : 1)) / 50);
         return temp < 0.4f ? 0.4f : temp;
     }
+    public NameOfCubeMaterial GetChozenNameOfCubeMaterial() => _chosenNameOfCubeMat;
+
 
     // STATES OF GAME
 

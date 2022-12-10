@@ -3,5 +3,6 @@
     FaceAnim1,
     Tugla,
     Agac1,Agac2,
-    Ytong
+    Ytong,
+    Kutuk
 }
