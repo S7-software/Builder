@@ -93,7 +93,7 @@ public class Cube : MonoBehaviour
     public void SetParameters(Vector3 localPos,Material material)
     {
         if(material)
-        _meshRenderer.material = material;
+         SetMaterial( material);
         transform.localPosition = localPos;
         transform.localRotation = Quaternion.Euler(0, 0, 0);
     }
@@ -105,7 +105,10 @@ public class Cube : MonoBehaviour
     }
 
 
-
+    public void SetMaterial(Material mat)
+    {
+        _meshRenderer.material = mat;
+    }
    void ActiveSensors()
     {
         foreach (var item in _sensors)

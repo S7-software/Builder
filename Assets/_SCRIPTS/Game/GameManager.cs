@@ -24,19 +24,19 @@ public class GameManager : MonoBehaviour
     float _counterAnimChange = 0;
     int _heightMax = 0, _counterCamera = 11;
     CANVAS_UI _canvasUI;
-    CANVAS_CHANGE_CUBE _canvasChangeMenu;
+
     Material _chosenMat;
     private void Awake()
     {
         instantiate = this;
         _cubeLast = FindObjectOfType<Cube>();
         _canvasUI = FindObjectOfType<CANVAS_UI>();
-        _canvasChangeMenu = FindObjectOfType<CANVAS_CHANGE_CUBE>();
         _allCubesInScene.Add(_cubeLast);
         _rigiStructure = _structure.GetComponent<Rigidbody>();
 
         _chosenNameOfCubeMat = KYTGameFree.GetChosenMaterial();
         _chosenMat = STResources.GetPlayerMaterial(_chosenNameOfCubeMat);
+       
 
     }
 
@@ -52,12 +52,14 @@ public class GameManager : MonoBehaviour
 
     IEnumerator StartCor()
     {
+        _cubeLast.SetMaterial(_chosenMat);
         _rigiStructure.useGravity = true;
         _rigiStructure.isKinematic = false;
         _showAnimOfCube = true;
         _cubeLast.RandomShowFace();
+
         FindObjectOfType<CameraLooks>().StartRotate();
-        SetChosenMenu();
+        CANVAS_CHANGE_CUBE.instantiate.SetChosenView(STResources.GetPlayerMaterialSprite(_chosenNameOfCubeMat), KYTGameFree.GetMaterialName(_chosenNameOfCubeMat), false, 0,200);
         yield return new WaitForSeconds(0);
 
     }
@@ -182,8 +184,10 @@ public class GameManager : MonoBehaviour
     public NameOfCubeMaterial GetChozenNameOfCubeMaterial() => _chosenNameOfCubeMat;
     public void SetTempChosenMaterial(NameOfCubeMaterial nameOfCubeMaterial)
     {
-        _canvasChangeMenu.SetChanged(true);
+        CANVAS_CHANGE_CUBE.instantiate.SetChanged(true);
         _chosenTempNameOfCubeMat = nameOfCubeMaterial;
+        CANVAS_CHANGE_CUBE.instantiate.SetChosenView(STResources.GetPlayerMaterialSprite(nameOfCubeMaterial), KYTGameFree.GetMaterialName(nameOfCubeMaterial), false, 0,200);
+
     }
     public void SetChosenMaterial()
     {
@@ -192,10 +196,7 @@ public class GameManager : MonoBehaviour
         _chosenNameOfCubeMat = _chosenTempNameOfCubeMat;
         _chosenMat = STResources.GetPlayerMaterial(_chosenNameOfCubeMat);
     }
-    private void SetChosenMenu()
-    {
-        //_canvasChangeMenu.SetChosenView()
-    }
+    
     // STATES OF GAME
 
     public void Finish()

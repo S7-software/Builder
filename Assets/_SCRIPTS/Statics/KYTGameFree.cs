@@ -6,7 +6,22 @@ public class KYTGameFree : MonoBehaviour
     const string GAME_FREE_BEST_HEIGHT = "game free best height";
     const string GAME_FREE_BEST_BLOCKS = "game free best blocks";
     const string GAME_FREE_CHOSEN_MATERIAL = "game free chosen materil";
+    const string GAME_FREE_CHOSEN_MATERIAL_NAME_STRING = "game free chosen material name string";
 
+
+    public static string GetMaterialName(NameOfCubeMaterial name)
+    { switch (name)
+        {
+
+            case NameOfCubeMaterial.Kutuk: return "Kutuk" ;
+            case NameOfCubeMaterial.Agac1:
+            case NameOfCubeMaterial.Agac2: return "Agac";
+            case NameOfCubeMaterial.Ytong: return "Ytong" ;
+            case NameOfCubeMaterial.Tugla: return "Tugla";
+            default:
+                return "Null";
+        }
+    }
 
     public static NameOfCubeMaterial GetChosenMaterial()
     {
