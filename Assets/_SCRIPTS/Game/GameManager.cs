@@ -29,6 +29,7 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         instantiate = this;
+        Application.targetFrameRate = 60;
         _cubeLast = FindObjectOfType<Cube>();
         _canvasUI = FindObjectOfType<CANVAS_UI>();
         _allCubesInScene.Add(_cubeLast);
